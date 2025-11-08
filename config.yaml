@@ -16,5 +16,5 @@ default_nearby_fields: [
 
 default_places_fields: [
   "displayName",
-  "formattedAddress",
+  "formattedAddress"
 ]
