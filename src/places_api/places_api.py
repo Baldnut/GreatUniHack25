@@ -27,6 +27,7 @@ def text_search(key: str, query: str, fields: list) -> dict:
         "X-Goog-Api-Key": key,
         "X-Goog-FieldMask": ",".join(fields)
     }
+
     response = requests.post(url, json=complete_query, headers=headers)
     if response.status_code == 200:
         return response.json()

@@ -1,0 +1,20 @@
+# Default Fields for places api calls
+
+default_search_fields: [
+  "displayName",
+  "id",
+  "location"]
+]
+
+
+default_nearby_fields: [
+  "displayName",
+  "formattedAddress"
+  "internationalPhoneNumber",
+  "rating"
+]
+
+default_places_fields: [
+  "displayName",
+  "formattedAddress",
+]
