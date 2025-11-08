@@ -6,6 +6,10 @@
     <title>Travel Planner</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+   
 </head>
 <body onload="document.getElementById('search_box').focus();">
 
@@ -33,10 +37,10 @@
   
 
     <!-- Location search homepage -->
-    <section id="homepage" class="bg-white" style="display: ;">
+    <section id="homepage" class="bg-white" style="display: block;">
         <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 z-10 relative">
             <a href="#" class="inline-flex justify-between items-center py-1 px-1 pe-4 mb-7 text-sm text-blue-700 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800">
-                <span class="text-xs bg-blue-600 rounded-full text-white px-4 py-1.5 me-3">New</span> <span class="text-sm font-medium">We help you find the perfect travel destination using AI</span> 
+                <span class="text-xs bg-blue-600 rounded-full text-white px-4 py-1.5 me-3">New</span> <span id="new_badge_pc" class="text-sm font-medium">We help you find the perfect travel destination using AI</span> <span id="new_badge_mobile" class="text-sm font-medium" style="display: none;">Try our improved search using AI</span> 
             </a>
             <div style="display: flex;justify-content: center;">
             <img src="./img/map.png" style="display: block;margin-left: auto;margin-right: auto;width: 130px;margin-bottom: 30px;margin-top: 30px;">
@@ -51,7 +55,7 @@
                         </svg>
                     </div>
                     <input spellcheck="false" type="text" id="search_box" class="block w-full p-4 ps-10 text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Where do you want to go?" style="font-size: 18px;padding-left: 50px;" required />
-                    <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                    <button id="main_search_submit" type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
                 </div>
             </form>
         </div>
@@ -60,11 +64,9 @@
 
     </section>
 
-    <!-- Location search results -->
-    <section id="results" class="bg-white py-8 px-4 mx-auto max-w-screen-xl lg:py-16 z-10 relative" style="display: none; flex-direction: column; align-items: center;">
+    <section id="results" class="bg-white" style="width: 70%;display: none;margin-left: auto;margin-right: auto;margin-top: 39px;">
 
-        
-        <form autocomplete="off" class="w-full mx-auto" style="width: 70%;margin-top: 10px;">   
+        <!--<form autocomplete="off" class="w-full mx-auto" style="width: 100%;margin-top: 70px;">   
             <div class="relative">
                 <div class="absolute inset-y-0 rtl:inset-x-0 start-0 flex items-center ps-3.5 pointer-events-none">
                     <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -72,22 +74,184 @@
                     </svg>
                 </div>
                 <input spellcheck="false" type="text" id="search_box_result" class="block w-full p-4 ps-10 text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="What are you looking for?" style="font-size: 18px;padding-left: 50px;" required />
-                <!--<button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>-->
             </div>
-        </form>
+        </form>-->
 
-
-        <div class="mt-4 p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert" style="width:70%;display: flex;align-items: center;">
-            <span style="margin-left: 20px;font-size: 18px;margin-right: 5px;" class="font-medium">Searching</span> - Looking for destinations that match
+        <div class="mt-4 p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert" style="display: flex;align-items: center;">
+            <div class="flex -space-x-4 rtl:space-x-reverse">
+                        <img style="background-color: white;padding: 5px;" class="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800" src="./img/wikipedia.webp" alt="">
+                        <img style="background-color: white;padding: 5px;" class="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800" src="./img/google.png" alt="">
+                        <img style="background-color: white;padding: 5px;" class="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800" src="./img/gemini.png" alt="">
+            </div>
+            <span style="margin-left: 20px;font-size: 18px;margin-right: 5px;" class="font-medium">Searching</span> <i id="old_query_text"> - from possible destinations</i>
         </div>
 
+       
+    <div id="pages_overview" class="flex items-stretch">
 
-        <ul class="my-4 space-y-3" style="width: 70%;">
-    
-        </ul>
+<div id="dest_list" class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700 h-full">
+    <h5 class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white">
+    Destinations
+    </h5>
+    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Select the city you'll be travelling</p>
+    <ul class="my-4 space-y-3">
+    <!-- Skeleton cards -->
+    <li>
+    <div class="flex items-center py-3 px-3 text-base font-bold text-gray-900 rounded-lg border border-gray-200">
+        <div class="w-7 h-7 bg-gray-200 rounded-full animate-pulse"></div>
+        <div class="flex-1 ms-3 flex items-center">
+            <div class="h-3.5 bg-gray-200 rounded-full w-44 animate-pulse"></div>
+        </div>
+        <div class="inline-flex items-center justify-center px-2 py-0.5 ms-3">
+            <div class="h-2.5 bg-gray-200 rounded-full w-14 animate-pulse"></div>
+        </div>
+    </div>
+    </li>
+    <li>
+    <div class="flex items-center py-3 px-3 text-base font-bold text-gray-900 rounded-lg border border-gray-200">
+        <div class="w-7 h-7 bg-gray-200 rounded-full animate-pulse"></div>
+        <div class="flex-1 ms-3 flex items-center">
+            <div class="h-3.5 bg-gray-200 rounded-full w-40 animate-pulse"></div>
+        </div>
+        <div class="inline-flex items-center justify-center px-2 py-0.5 ms-3">
+            <div class="h-2.5 bg-gray-200 rounded-full w-14 animate-pulse"></div>
+        </div>
+    </div>
+    </li>
+    <li>
+    <div class="flex items-center py-3 px-3 text-base font-bold text-gray-900 rounded-lg border border-gray-200">
+        <div class="w-7 h-7 bg-gray-200 rounded-full animate-pulse"></div>
+        <div class="flex-1 ms-3 flex items-center">
+            <div class="h-3.5 bg-gray-200 rounded-full w-44 animate-pulse"></div>
+        </div>
+        <div class="inline-flex items-center justify-center px-2 py-0.5 ms-3">
+            <div class="h-2.5 bg-gray-200 rounded-full w-14 animate-pulse"></div>
+        </div>
+    </div>
+    </li>
+    <li>
+    <div class="flex items-center py-3 px-3 text-base font-bold text-gray-900 rounded-lg border border-gray-200">
+        <div class="w-7 h-7 bg-gray-200 rounded-full animate-pulse"></div>
+        <div class="flex-1 ms-3 flex items-center">
+            <div class="h-3.5 bg-gray-200 rounded-full w-40 animate-pulse"></div>
+        </div>
+        <div class="inline-flex items-center justify-center px-2 py-0.5 ms-3">
+            <div class="h-2.5 bg-gray-200 rounded-full w-14 animate-pulse"></div>
+        </div>
+    </div>
+    </li>
+        <li>
+    <div class="flex items-center py-3 px-3 text-base font-bold text-gray-900 rounded-lg border border-gray-200">
+        <div class="w-7 h-7 bg-gray-200 rounded-full animate-pulse"></div>
+        <div class="flex-1 ms-3 flex items-center">
+            <div class="h-3.5 bg-gray-200 rounded-full w-44 animate-pulse"></div>
+        </div>
+        <div class="inline-flex items-center justify-center px-2 py-0.5 ms-3">
+            <div class="h-2.5 bg-gray-200 rounded-full w-14 animate-pulse"></div>
+        </div>
+    </div>
+    </li>
 
+    </ul>
+    <div>
+    <button data-popover-target="destinations-info" type="button" class="inline-flex items-center text-xs font-normal text-gray-500 hover:underline dark:text-gray-400">
+    <svg class="w-3 h-3 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.529 7.988a2.502 2.502 0 0 1 5 .191A2.441 2.441 0 0 1 10 10.582V12m-.01 3.008H10M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+    </svg>
+    How are these destinations chosen?</button>
+    <div data-popover id="destinations-info" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
+        <div class="px-3 py-2">
+            <p>Destinations are ranked using an AI model based on your search criteria. Please note that there may be inaccuracies in the results.</p>
+        </div>
+        <div data-popper-arrow></div>
+    </div>
+    </div>
+    </div>
+
+
+    <!-- City Overview Card (placeholder shown until a city is selected) -->
+
+    <div id="city_overview_empty" style="margin-left: 20px; min-height: 18rem;" class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full flex items-center justify-center">
+        <div id="city_empty_content" class="flex flex-col items-center text-center gap-3 py-12 px-6">
+            <img id="city_empty_image" src="./img/map.png" class="rounded-md object-contain" style="height:48px; width:auto;" alt="Map" />
+            <div id="city_empty_copy" style="margin-top: 20px;">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Select a destination</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Choose a city from the left to get started</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- City Overview Card (hidden until selection) -->
+
+    <div id="city_overview" style="margin-left: 20px; display: none; min-height: 18rem;" class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full flex flex-col">
+        
+        <!-- City Image (tuned height to align with left skeleton cards) -->
+        <div id="city_header" class="relative flex-none">
+            <!-- tuned height to stay proportional to the left column list -->
+            <img id="city_image" style="height: 7rem;" class="rounded-t-lg w-full object-cover" src="./img/gray.png" alt="City view" />
+            <!-- Subtle gradient overlay for contrast -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-t-lg pointer-events-none"></div>
+        </div>
+
+    <!-- City Information -->
+    <div id="city_info" class="p-5 pb-4 flex-1 flex flex-col overflow-auto">
+            <div>
+                <div class="mb-3">
+                    <h5 id="city_about_heading" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Paris</h5>
+                    <p id="city_description" class="mb-3 font-normal text-gray-700 dark:text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; line-clamp: 3; overflow: hidden;">
+                        The City of Light captivates visitors with its iconic Eiffel Tower, world-class museums like the Louvre, 
+                        charming cafés along the Seine, and stunning architecture.
+                    </p>
+                </div>
+
+                <!-- Key Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+                    <a id="city_wiki_box" href="#" target="_blank" rel="noopener" class="flex flex-col items-center p-3 bg-gray-50 rounded-lg dark:bg-gray-700 transition hover:bg-blue-100 dark:hover:bg-gray-600">
+                        <img class="w-8 h-8 text-blue-600 mb-1" src="./img/wikipedia.png" alt="Wikipedia Logo" />
+                        <span class="text-xs text-gray-500 dark:text-gray-300">Wikipedia</span>
+                        <span class="text-sm font-semibold text-gray-900 dark:text-white">Open article</span>
+                    </a>
+                    <a id="city_map_box" href="#" target="_blank" rel="noopener" class="flex flex-col items-center p-3 bg-gray-50 rounded-lg dark:bg-gray-700 transition hover:bg-blue-100 dark:hover:bg-gray-600">
+                        <img class="w-8 h-8 text-blue-600 mb-1" src="./img/location.png" alt="Maps Icon" />
+                        <span class="text-xs text-gray-500 dark:text-gray-300">Maps</span>
+                        <span class="text-sm font-semibold text-gray-900 dark:text-white">View location</span>
+                    </a>
+                    <div id="city_country_box" class="flex flex-col items-center p-3 bg-gray-50 rounded-lg dark:bg-gray-700 cursor-default">
+                         <img class="w-8 h-8 text-blue-600 mb-1" src="./img/globe.png" alt="Globe Icon" />
+                        <span class="text-xs text-gray-500 dark:text-gray-300">Country</span>
+                        <span id="city_country_box_label" class="text-sm font-semibold text-gray-900 dark:text-white">Learn more</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <!-- Action Button with smaller bottom margin so it stays close to content but inside the card -->
+                <button id="continue_button" type="button" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 mb-1 text-center inline-flex items-center justify-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <span class="mobile-text">Select this destination</span>
+                    <span>Select this destination and continue</span>
+                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
     
-    </section>
+
+</section>
+
+<div id="overview_modal" aria-hidden="true">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="city_about_heading">
+        <button type="button" id="overview_modal_close" aria-label="Close overview">&times;</button>
+        <div class="modal-body">
+            <div id="overview_modal_content"></div>
+        </div>
+    </div>
+</div>
 
   
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>

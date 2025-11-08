@@ -1,3 +1,306 @@
 body {
     font-family: "Poppins";
 }
+
+/* Custom Scrollbar for Places Drawer */
+#places-drawer {
+   
+    /*border: 1px solid #eee;*/
+    border-radius: 24px !important;
+    height: 94vh;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+#places-drawer::-webkit-scrollbar {
+    width: 10px;
+}
+
+#places-drawer::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 12px;
+    margin: 24px 4px;
+}
+
+#places-drawer::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #CBD5E0 0%, #94A3B8 100%);
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+#places-drawer::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #94A3B8 0%, #64748B 100%);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Dark mode scrollbar */
+.dark #places-drawer {
+    scrollbar-color: #475569 rgba(255, 255, 255, 0.05);
+}
+
+.dark #places-drawer::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.dark #places-drawer::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #475569 0%, #334155 100%);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark #places-drawer::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #334155 0%, #1E293B 100%);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Additional styling for floating card */
+#places-drawer {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Ensure drawer is completely hidden when closed */
+#places-drawer.translate-x-full {
+    transform: translateX(calc(100% + 3rem)) !important;
+}
+
+/* Speaking Animation */
+.speaking-bars {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    height: 20px;
+}
+
+.speaking-bar {
+    width: 3px;
+    background: currentColor;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Static bar heights */
+.speaking-bar:nth-child(1) {
+    height: 8px;
+}
+
+.speaking-bar:nth-child(2) {
+    height: 14px;
+}
+
+.speaking-bar:nth-child(3) {
+    height: 10px;
+}
+
+.speaking-bar:nth-child(4) {
+    height: 16px;
+}
+
+/* Animated bars when speaking */
+.speaking-bars.active .speaking-bar {
+    animation: speak 0.8s ease-in-out infinite;
+}
+
+.speaking-bars.active .speaking-bar:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.speaking-bars.active .speaking-bar:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.speaking-bars.active .speaking-bar:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.speaking-bars.active .speaking-bar:nth-child(4) {
+    animation-delay: 0.1s;
+}
+
+@keyframes speak {
+    0%, 100% {
+        transform: scaleY(0.5);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+}
+
+#overview_modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(17, 24, 39, 0.45);
+}
+
+#overview_modal.active {
+    display: flex;
+}
+
+#overview_modal .modal-panel {
+    position: relative;
+    width: 100%;
+    max-width: 28rem;
+    max-height: 90vh;
+    overflow: hidden;
+    border-radius: 1rem;
+    background-color: #ffffff;
+    box-shadow: 0 25px 50px -12px rgba(30, 41, 59, 0.45);
+}
+
+#overview_modal .modal-body {
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+#overview_modal_close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.15);
+    color: #111827;
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    z-index: 10;
+}
+
+#overview_modal_close:hover {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+#city_overview.in-modal {
+    margin-left: 0 !important;
+    width: 100%;
+    border-radius: 0;
+    border: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    #overview_modal_close {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #f8fafc;
+    }
+
+    #overview_modal_close:hover {
+        background-color: rgba(255, 255, 255, 0.25);
+    }
+}
+
+@media (max-width: 768px) {
+    #results {
+        width: 85% !important;
+    }
+
+    #pages_overview {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    #dest_list {
+        max-width: none;
+        width: 100%;
+    }
+
+    #city_overview,
+    #city_overview_empty {
+        display: none !important;
+        margin-left: 0 !important;
+        width: 100%;
+    }
+
+    #overview_modal.active #city_overview {
+        display: flex !important;
+    }
+
+    #old_query_text {
+        display: none !important;
+    }
+
+    /* Hide skeleton loader circles only */
+    #dest_list ul li .w-7.h-7.bg-gray-200.rounded-full {
+        display: none !important;
+    }
+
+    #overview_modal .modal-panel {
+        height: 100vh;
+        max-width: none;
+        display: flex;
+        flex-direction: column;
+        margin: 0 1rem;
+    }
+
+    #overview_modal .modal-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+
+    #continue_button span:not(.mobile-text) {
+        display: none;
+    }
+
+    #continue_button span.mobile-text {
+        display: inline;
+    }
+
+    #new_badge_mobile {
+        display: block !important;
+    }
+
+    #new_badge_pc {
+        display: none;
+    }
+
+    #search_box {
+        font-size: 16px !important;
+    }
+
+    #searchForm {
+        width: 90% !important;
+    }
+
+    #main_search_submit {
+        display: none !important;
+    }
+}
+
+@media (min-width: 769px) {
+    #overview_modal .modal-panel {
+        max-width: 28rem;
+        max-height: 90vh;
+        border-radius: 1rem;
+        box-shadow: 0 25px 50px -12px rgba(30, 41, 59, 0.45);
+    }
+
+    #overview_modal .modal-body {
+        padding: 1rem;
+    }
+
+    #continue_button span:not(.mobile-text) {
+        display: inline;
+    }
+
+    #continue_button span.mobile-text {
+        display: none;
+    }
+}
