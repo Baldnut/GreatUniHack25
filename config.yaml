@@ -3,7 +3,7 @@
 default_search_fields: [
   "displayName",
   "id",
-  "location"]
+  "location"
 ]
 
 
