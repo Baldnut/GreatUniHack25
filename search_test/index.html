@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Planner</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body onload="document.getElementById('search_box').focus();">
+
+<nav class="bg-white border-gray-200 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-600">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <a href="./index.html" class="flex items-center space-x-3 rtl:space-x-reverse">
+          <img src="./img/map.png" class="h-8" />
+          <span class="self-center text-2xl text-gray-900 whitespace-nowrap dark:text-white">&nbsp;Travel Planner</span>
+      </a>
+      
+      <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+        <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <li>
+            <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500" aria-current="page">Home</a>
+          </li>
+          
+          <li>
+            <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">How it works</a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+</nav>
+  
+
+    <!-- Location search homepage -->
+    <section id="homepage" class="bg-white" style="display: ;">
+        <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 z-10 relative">
+            <a href="#" class="inline-flex justify-between items-center py-1 px-1 pe-4 mb-7 text-sm text-blue-700 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800">
+                <span class="text-xs bg-blue-600 rounded-full text-white px-4 py-1.5 me-3">New</span> <span class="text-sm font-medium">We help you find the perfect travel destination using AI</span> 
+            </a>
+            <div style="display: flex;justify-content: center;">
+            <img src="./img/map.png" style="display: block;margin-left: auto;margin-right: auto;width: 130px;margin-bottom: 30px;margin-top: 30px;">
+            </div>
+            
+            <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-200">Discover thousands of attractions and places to visit</p>
+            <form id="searchForm" autocomplete="off" class="w-full mx-auto" style="width: 70%;margin-top: 80px;" onsubmit="handleSearch(event)">   
+                <div class="relative">
+                    <div class="absolute inset-y-0 rtl:inset-x-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                        <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </div>
+                    <input spellcheck="false" type="text" id="search_box" class="block w-full p-4 ps-10 text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Where do you want to go?" style="font-size: 18px;padding-left: 50px;" required />
+                    <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                </div>
+            </form>
+        </div>
+
+
+
+    </section>
+
+    <!-- Location search results -->
+    <section id="results" class="bg-white py-8 px-4 mx-auto max-w-screen-xl lg:py-16 z-10 relative" style="display: none; flex-direction: column; align-items: center;">
+
+        
+        <form autocomplete="off" class="w-full mx-auto" style="width: 70%;margin-top: 10px;">   
+            <div class="relative">
+                <div class="absolute inset-y-0 rtl:inset-x-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                    <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                    </svg>
+                </div>
+                <input spellcheck="false" type="text" id="search_box_result" class="block w-full p-4 ps-10 text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="What are you looking for?" style="font-size: 18px;padding-left: 50px;" required />
+                <!--<button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>-->
+            </div>
+        </form>
+
+
+        <div class="mt-4 p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert" style="width:70%;display: flex;align-items: center;">
+            <span style="margin-left: 20px;font-size: 18px;margin-right: 5px;" class="font-medium">Searching</span> - Looking for destinations that match
+        </div>
+
+
+        <ul class="my-4 space-y-3" style="width: 70%;">
+    
+        </ul>
+
+    
+    </section>
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+<script src="./search.js"></script>
+</body>
+</html>
