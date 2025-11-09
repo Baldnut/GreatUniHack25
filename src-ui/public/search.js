@@ -1,4 +1,4 @@
-const GEMINI_API_KEY = 'AIzaSyA6MYmG27VkeIEpIBuaJ-TIIJrQV_E9Cp0';
+const GEMINI_API_KEY = 'AIzaSyBST-U6u64VTqVrcP0rYgw7TUXWEl1zjtk';
 const CITY_IMAGE_BASE_HEIGHT = 112; // px (~7rem)
 const MOBILE_BREAKPOINT = 768;
 let currentCityData = null;
@@ -317,11 +317,9 @@ function setupContinueButton() {
         }
         const { name, coordinates } = currentCityData;
         if (coordinates?.lat != null && coordinates?.lon != null) {
-            // Navigate to graph.html with city parameters
-            window.location.href = `graph.html?name=${encodeURIComponent(name)}&lat=${coordinates.lat}&lon=${coordinates.lon}`;
+            console.log(`Selected city: ${name} (lat: ${coordinates.lat}, lon: ${coordinates.lon})`);
         } else {
             console.log(`Selected city: ${name} (coordinates unavailable)`);
-            alert('Sorry, coordinates are not available for this city.');
         }
     };
 }

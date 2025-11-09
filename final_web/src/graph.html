@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node Planet</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+   
+</head>
+<body style="overflow-y: hidden;overflow-x: hidden;">
+
+<nav class="bg-white border-gray-200 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-600">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <a href="./index.html" class="flex items-center space-x-3 rtl:space-x-reverse">
+          <img src="./img/map.png" class="h-8" />
+          <span class="self-center text-2xl text-gray-900 whitespace-nowrap dark:text-white">&nbsp;Node Planet</span>
+      </a>
+      
+      <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+        <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <li>
+            <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500" aria-current="page">Home</a>
+          </li>
+          
+          <li>
+            <button data-popover-target="popover-how-it-works" type="button" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">How it works</button>
+            <div data-popover id="popover-how-it-works" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
+                <div class="px-3 py-2">
+                    <p>Search a destination and discover amazing attractions to visit using our AI-powered recommendations!</p>
+                </div>
+                <div data-popper-arrow></div>
+            </div>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+</nav>
+
+<iframe id="map-frame" src="" class="w-full border-0" style="height: calc(100vh - 64px);overflow: hidden;" scrolling="no"></iframe>
+
+<script>
+// Get URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const cityName = urlParams.get('name');
+const lat = urlParams.get('lat');
+const lon = urlParams.get('lon');
+
+// Set the iframe src with the parameters
+if (cityName && lat && lon) {
+    document.getElementById('map-frame').src = `http://limeparallelogram.uk:3000/?name=${encodeURIComponent(cityName)}&lat=${lat}&lon=${lon}`;
+} else {
+    // Default to Barcelona if no parameters provided
+    document.getElementById('map-frame').src = "http://limeparallelogram.uk:3000/?name=Barcelona&lat=41.3851&lon=2.1734";
+}
+</script>
+
+
+<!-- Places Information Drawer -->
+<div id="places-drawer" class="fixed top-6 right-6 z-40 h-[calc(100vh-3rem)] overflow-y-auto transition-transform translate-x-full bg-white w-96 dark:bg-gray-800 shadow-2xl" style="border-radius: 24px;" tabindex="-1" aria-labelledby="places-drawer-label">
+    <!-- Close Button - Smaller and More Discrete -->
+    <button type="button" data-drawer-hide="places-drawer" aria-controls="places-drawer" 
+            class="absolute w-7 h-7 bg-white/90 hover:bg-white text-gray-500 hover:text-gray-700 rounded-full shadow-md transition-all duration-200 flex items-center justify-center backdrop-blur-sm dark:bg-gray-700/90 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-gray-200 z-50" 
+            style="top: 10px; right: 10px;">
+        <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        </svg>
+        <span class="sr-only">Close drawer</span>
+    </button>
+
+    <!-- Skeleton Loader -->
+    <div id="places-drawer-skeleton" class="animate-pulse">
+        <!-- Image Carousel Skeleton -->
+        <div class="w-full h-48 bg-gray-300 dark:bg-gray-700" style="border-radius: 24px 24px 0 0;"></div>
+
+        <!-- Padded Content -->
+        <div class="px-4 pb-6 pt-4 space-y-4">
+            <!-- Title and Rating Skeleton -->
+            <div class="space-y-3">
+                <div class="h-6 bg-gray-300 rounded-full dark:bg-gray-600 w-3/4"></div>
+                <div class="flex items-center space-x-4">
+                    <div class="h-4 bg-gray-300 rounded-full dark:bg-gray-600 w-20"></div>
+                    <div class="h-4 bg-gray-300 rounded-full dark:bg-gray-600 w-28"></div>
+                </div>
+                <div class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-5/6"></div>
+            </div>
+
+            <!-- Quick Actions Skeleton -->
+            <div class="grid grid-cols-3 gap-2 pt-2">
+                <div class="h-16 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+                <div class="h-16 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+                <div class="h-16 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+            </div>
+
+            <!-- Business Hours Skeleton -->
+            <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-3">
+                <div class="h-5 bg-gray-300 rounded-full dark:bg-gray-600 w-1/3"></div>
+                <div class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                <div class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                <div class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-5/6"></div>
+            </div>
+
+            <!-- Contact Info Skeleton -->
+            <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-3">
+                <div class="h-5 bg-gray-300 rounded-full dark:bg-gray-600 w-1/3"></div>
+                <div class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                <div class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 w-5/6"></div>
+            </div>
+
+            <!-- Main Action Button Skeleton -->
+            <div class="pt-2">
+                <div class="h-10 bg-gray-300 dark:bg-gray-600 rounded-lg w-full"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div id="drawer-content" class="space-y-4" style="display: none;">
+        <!-- Place Image Carousel -->
+        <div id="photos-carousel" class="relative w-full h-48 bg-gray-200 overflow-hidden" style="border-radius: 24px 24px 0 0;">
+            <!-- Carousel items will be injected here -->
+        </div>
+
+        <!-- Content with padding -->
+        <div class="px-4 pb-6 space-y-4">
+
+        <!-- Place Title and Rating -->
+        <div class="space-y-2">
+            <h3 id="place-name" class="text-xl font-bold text-gray-900 dark:text-white"></h3>
+            <div class="flex items-center space-x-2">
+                <div class="flex items-center">
+                    <svg class="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                    </svg>
+                    <span id="place-rating" class="text-sm font-medium text-gray-900 dark:text-white"></span>
+                </div>
+                <span id="place-rating-count" class="text-sm text-gray-500 dark:text-gray-400"></span>
+                <span id="place-open-status" class="text-xs font-medium px-2.5 py-0.5 rounded"></span>
+            </div>
+            <p id="place-address" class="text-sm text-gray-600 dark:text-gray-400"></p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-3 gap-2">
+            <a id="directions-button" href="#" target="_blank" class="flex flex-col items-center p-3 bg-blue-50 hover:bg-blue-100 rounded-lg dark:bg-blue-900/20 dark:hover:bg-blue-900/30 transition-colors">
+                <svg class="w-5 h-5 text-blue-600 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                </svg>
+                <span class="text-xs text-blue-600 font-medium">Directions</span>
+            </a>
+            <a id="call-button" href="#" class="flex flex-col items-center p-3 bg-green-50 hover:bg-green-100 rounded-lg dark:bg-green-900/20 dark:hover:bg-green-900/30 transition-colors">
+                <svg class="w-5 h-5 text-green-600 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                </svg>
+                <span class="text-xs text-green-600 font-medium">Call</span>
+            </a>
+            <button id="speak-btn" class="flex flex-col items-center p-3 bg-purple-50 hover:bg-purple-100 rounded-lg dark:bg-purple-900/20 dark:hover:bg-purple-900/30 transition-colors">
+                <div id="speak-bars" class="speaking-bars text-purple-600 mb-1">
+                    <span class="speaking-bar"></span>
+                    <span class="speaking-bar"></span>
+                    <span class="speaking-bar"></span>
+                    <span class="speaking-bar"></span>
+                </div>
+                <span class="text-xs text-purple-600 font-medium">Speak</span>
+            </button>
+        </div>
+
+        <!-- Business Hours -->
+        <div id="business-hours" class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+            <h4 class="font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                <svg class="w-4 h-4 me-2 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                </svg>
+                Hours
+            </h4>
+            <div id="hours-list" class="space-y-2 text-sm">
+                <!-- Hours will be injected here -->
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+            <h4 class="font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                <svg class="w-4 h-4 me-2 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                </svg>
+                Contact
+            </h4>
+            <div class="space-y-3 text-sm">
+                <div id="phone-number-container" class="flex items-center" style="display: none;">
+                    <svg class="w-4 h-4 me-3 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                    </svg>
+                    <a id="place-phone-number" href="#" class="text-blue-600 hover:underline cursor-pointer"></a>
+                </div>
+                <div class="flex items-start">
+                    <svg class="w-4 h-4 me-3 mt-0.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span id="place-full-address" class="text-gray-700 dark:text-gray-300"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <div id="reviews-section" class="border border-gray-200 dark:border-gray-600 rounded-lg p-4" style="display: none;">
+            <div class="flex items-center justify-between mb-3">
+                <h4 class="font-semibold text-gray-900 dark:text-white flex items-center">
+                    <svg class="w-4 h-4 me-2 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                    Reviews
+                </h4>
+                <span class="text-sm text-blue-600 hover:underline cursor-pointer">See all</span>
+            </div>
+            
+            <!-- Review Item -->
+            <div id="reviews-list" class="space-y-4">
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="space-y-2 pt-2 pb-2">
+            <a id="get-directions-main" href="#" target="_blank" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center">
+                <svg class="w-4 h-4 me-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                </svg>
+                Get Directions
+            </a>
+            
+        </div>
+        </div> <!-- Close content with padding -->
+    </div> <!-- Close space-y-4 -->
+
+</div> <!-- Close drawer -->
+
+<script>
+let drawer; // Keep a reference to the drawer instance
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize the drawer once the DOM is ready
+    const targetEl = document.getElementById('places-drawer');
+    const options = {
+        placement: 'right',
+        backdrop: true,
+        bodyScrolling: false,
+        edge: false,
+        edgeOffset: '',
+        backdropClasses: 'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-30',
+    };
+    const instanceOptions = {
+      id: 'places-drawer',
+      override: true
+    };
+    drawer = new Drawer(targetEl, options, instanceOptions);
+});
+
+
+window.addEventListener("message", (event) => {
+
+  console.log("Received message:", event.data);
+  if (event.data) {
+    // Open drawer and load place details
+    if (drawer) {
+        drawer.show();
+    }
+    // The function is defined in card.js
+    loadAndShowPlaceDetails(event.data);
+  }
+});
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
+<script src="./card.js"></script>
+<script src="./speech.js"></script>
+
+</body>
+</html>

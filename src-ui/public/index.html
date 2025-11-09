@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Node Planet</title>
+    <title>Travel Planner</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="./style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,8 +16,8 @@
 <nav class="bg-white border-gray-200 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-600">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
       <a href="./index.html" class="flex items-center space-x-3 rtl:space-x-reverse">
-          <img src="./img/map.png" class="h-8" />
-          <span class="self-center text-2xl text-gray-900 whitespace-nowrap dark:text-white">&nbsp;Node Planet</span>
+          <img src="/map.png" class="h-8" />
+          <span class="self-center text-2xl text-gray-900 whitespace-nowrap dark:text-white">&nbsp;Travel Planner</span>
       </a>
       
       <div class="hidden w-full md:block md:w-auto" id="navbar-default">
@@ -27,13 +27,7 @@
           </li>
           
           <li>
-            <button data-popover-target="popover-how-it-works" type="button" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">How it works</button>
-            <div data-popover id="popover-how-it-works" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
-                <div class="px-3 py-2">
-                    <p>Search a destination and discover amazing attractions to visit using our AI-powered recommendations!</p>
-                </div>
-                <div data-popper-arrow></div>
-            </div>
+            <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">How it works</a>
           </li>
           
         </ul>
@@ -49,7 +43,7 @@
                 <span class="text-xs bg-blue-600 rounded-full text-white px-4 py-1.5 me-3">New</span> <span id="new_badge_pc" class="text-sm font-medium">We help you find the perfect travel destination using AI</span> <span id="new_badge_mobile" class="text-sm font-medium" style="display: none;">Try our improved search using AI</span> 
             </a>
             <div style="display: flex;justify-content: center;">
-            <img src="./img/map.png" style="display: block;margin-left: auto;margin-right: auto;width: 130px;margin-bottom: 30px;margin-top: 30px;">
+            <img src="/map.png" style="display: block;margin-left: auto;margin-right: auto;width: 130px;margin-bottom: 30px;margin-top: 30px;">
             </div>
             
             <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-200">Discover thousands of attractions and places to visit</p>
@@ -85,9 +79,9 @@
 
         <div class="mt-4 p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert" style="display: flex;align-items: center;">
             <div class="flex -space-x-4 rtl:space-x-reverse">
-                        <img style="background-color: white;padding: 5px;" class="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800" src="./img/wikipedia.webp" alt="">
-                        <img style="background-color: white;padding: 5px;" class="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800" src="./img/google.png" alt="">
-                        <img style="background-color: white;padding: 5px;" class="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800" src="./img/gemini.png" alt="">
+                        <img style="background-color: white;padding: 5px;" class="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800" src="/wikipedia.webp" alt="">
+                        <img style="background-color: white;padding: 5px;" class="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800" src="/google.png" alt="">
+                        <img style="background-color: white;padding: 5px;" class="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800" src="/gemini.png" alt="">
             </div>
             <span style="margin-left: 20px;font-size: 18px;margin-right: 5px;" class="font-medium">Searching</span> <i id="old_query_text"> - from possible destinations</i>
         </div>
@@ -179,7 +173,7 @@
 
     <div id="city_overview_empty" style="margin-left: 20px; min-height: 18rem;" class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full flex items-center justify-center">
         <div id="city_empty_content" class="flex flex-col items-center text-center gap-3 py-12 px-6">
-            <img id="city_empty_image" src="./img/map.png" class="rounded-md object-contain" style="height:48px; width:auto;" alt="Map" />
+            <img id="city_empty_image" src="/map.png" class="rounded-md object-contain" style="height:48px; width:auto;" alt="Map" />
             <div id="city_empty_copy" style="margin-top: 20px;">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Select a destination</h3>
                 <p class="text-sm text-gray-500 dark:text-gray-400">Choose a city from the left to get started</p>
@@ -194,7 +188,7 @@
         <!-- City Image (tuned height to align with left skeleton cards) -->
         <div id="city_header" class="relative flex-none">
             <!-- tuned height to stay proportional to the left column list -->
-            <img id="city_image" style="height: 7rem;" class="rounded-t-lg w-full object-cover" src="./img/gray.png" alt="City view" />
+            <img id="city_image" style="height: 7rem;" class="rounded-t-lg w-full object-cover" src="/gray.png" alt="City view" />
             <!-- Subtle gradient overlay for contrast -->
             <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-t-lg pointer-events-none"></div>
         </div>
@@ -213,17 +207,17 @@
                 <!-- Key Stats -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
                     <a id="city_wiki_box" href="#" target="_blank" rel="noopener" class="flex flex-col items-center p-3 bg-gray-50 rounded-lg dark:bg-gray-700 transition hover:bg-blue-100 dark:hover:bg-gray-600">
-                        <img class="w-8 h-8 text-blue-600 mb-1" src="./img/wikipedia.png" alt="Wikipedia Logo" />
+                        <img class="w-8 h-8 text-blue-600 mb-1" src="/wikipedia.png" alt="Wikipedia Logo" />
                         <span class="text-xs text-gray-500 dark:text-gray-300">Wikipedia</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white">Open article</span>
                     </a>
                     <a id="city_map_box" href="#" target="_blank" rel="noopener" class="flex flex-col items-center p-3 bg-gray-50 rounded-lg dark:bg-gray-700 transition hover:bg-blue-100 dark:hover:bg-gray-600">
-                        <img class="w-8 h-8 text-blue-600 mb-1" src="./img/location.png" alt="Maps Icon" />
+                        <img class="w-8 h-8 text-blue-600 mb-1" src="/location.png" alt="Maps Icon" />
                         <span class="text-xs text-gray-500 dark:text-gray-300">Maps</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white">View location</span>
                     </a>
                     <div id="city_country_box" class="flex flex-col items-center p-3 bg-gray-50 rounded-lg dark:bg-gray-700 cursor-default">
-                         <img class="w-8 h-8 text-blue-600 mb-1" src="./img/globe.png" alt="Globe Icon" />
+                         <img class="w-8 h-8 text-blue-600 mb-1" src="/globe.png" alt="Globe Icon" />
                         <span class="text-xs text-gray-500 dark:text-gray-300">Country</span>
                         <span id="city_country_box_label" class="text-sm font-semibold text-gray-900 dark:text-white">Learn more</span>
                     </div>

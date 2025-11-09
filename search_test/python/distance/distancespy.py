@@ -1,14 +1,36 @@
+#!/usr/bin/python3
+
+# Initialisation on web server
+
+import cgitb
+cgitb.enable()
+import sys
+sys.path.append('/mnt/web305/c1/31/53991431/htdocs/.local/lib/python3.11/site-packages')
+
+
+# DISTANCE API
+
+from flask import Flask, request
 import requests
 import googlemaps
 from google import genai
 from datetime import datetime, timezone, timedelta
+import json
+
+app = Flask(__name__)
 
 current_UTC = datetime.now(timezone.utc)
 
-api_key = 'GEMINIKEY'
-API_key_google = "GOOGLEMAPSKEY"
+api_key = 'AIzaSyA6MYmG27VkeIEpIBuaJ-TIIJrQV_E9Cp0'
+API_key_google = "AIzaSyDDdy36pvp3zh6kbXNVdr_Z8TmCKu06xSc"
 gmap_client = googlemaps.Client(key = API_key_google)
 client = genai.Client(api_key = api_key)
+
+url = "https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix"
+headers = {'Content-Type':'application/json',
+           'X-Goog-Api-Key':API_key_google,
+           'X-Goog-FieldMask':",".join(['duration', 'distanceMeters', 'condition'])}
+
 
 def station_coords(city_coordinates):
     #Generates the coordinates of a city's main train station, given the city's general coordinates. Returns None if not possible
@@ -31,10 +53,6 @@ def station_coords(city_coordinates):
 
     return(lat, long, offset)
 
-url = "https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix"
-headers = {'Content-Type':'application/json',
-           'X-Goog-Api-Key':API_key_google,
-           'X-Goog-FieldMask':",".join(['duration', 'distanceMeters', 'condition'])}
 
 def travel_time_distance(origin, dest):
     #Calculates the transit times and distance from one set of coodrinates to another via public transit. Returns None if not possible
@@ -87,6 +105,36 @@ def travel_time_distance(origin, dest):
 
     return(int(response.json()[0].get('duration')[:-1]), response.json()[0].get('distanceMeters'))
 
+
 def time_distance_between_cities(origin, dest):
     #Calculates the travel time and distance between the rail stations of two cities given their general coordinates. Returns None if not possible
     return travel_time_distance(station_coords(origin), station_coords(dest))
+
+
+@app.route("/time-distance", methods={"GET"})
+def handle_time_distance_between_cities():
+
+    origin = request.args.get("o")
+
+    dest = request.args.get("d")
+
+    result = travel_time_distance(origin, dest)
+
+    if result == None:
+        return None
+    
+    output = {
+        'time' : result[0],
+        'distance' : result[1]
+    }
+    
+    return output
+
+
+@app.route('/', methods=['GET'])
+def status():
+    return json.dumps({"status": "running", "message": "Server is up and running"})
+
+
+if __name__ == "__main__":
+    app.run()
