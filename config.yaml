@@ -6,15 +6,23 @@ default_search_fields: [
   "location"
 ]
 
-
 default_nearby_fields: [
   "displayName",
-  "formattedAddress"
-  "internationalPhoneNumber",
-  "rating"
+  "id",
+  "location"
 ]
 
 default_places_fields: [
-  "displayName",
-  "formattedAddress"
+    "displayName",
+    "formattedAddress",
+    "location",
+    "reviews",
+    "photos",
+    "regularOpeningHours",
+    "websiteUri",
+    "internationalPhoneNumber",
+    "priceLevel",
+    "serves_breakfast",
+    "outdoor_seating",
+    "reservable"
 ]

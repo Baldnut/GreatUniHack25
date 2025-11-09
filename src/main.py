@@ -3,10 +3,13 @@ import os
 from flask import Flask, request, jsonify
 from places_api.places_api import *
 import yaml
+
 app = Flask(__name__)
 
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
+if not API_KEY:
+    exit("API_KEY not found in .env")
 
 with open(f"{os.path.dirname(os.getcwd())}/config.yaml", "r") as f:
     config = yaml.safe_load(f)
@@ -52,7 +55,7 @@ def handle_nearby_search():
 
 @app.route("/details/<string:place_id>", methods=["GET"])
 def handle_place_details(place_id):
-    fields_str = request.args.get("fields")
+    fields_str = request.args.get("fields", default_places_fields)
     fields = fields_str.split(",")
 
     result = place_details(API_KEY, place_id, fields=fields)
