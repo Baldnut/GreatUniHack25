@@ -3,13 +3,17 @@ import os
 from flask import Flask, request, jsonify
 from places_api.places_api import *
 import yaml
+from google import genai
+from google.genai import types
 
 app = Flask(__name__)
 
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
-if not API_KEY:
-    exit("API_KEY not found in .env")
+GEN_API_KEY = os.getenv("GEN_API_KEY")
+
+if not API_KEY or not GEN_API_KEY:
+    exit("An API_KEY was not found in .env")
 
 with open(f"{os.path.dirname(os.getcwd())}/config.yaml", "r") as f:
     config = yaml.safe_load(f)
@@ -17,6 +21,27 @@ with open(f"{os.path.dirname(os.getcwd())}/config.yaml", "r") as f:
 default_search_fields = ",".join(config["default_search_fields"])
 default_nearby_fields = ",".join(config["default_nearby_fields"])
 default_places_fields = ",".join(config["default_places_fields"])
+gemini_system_instructions = config["gemini_system_instructions"]
+
+genai.configure(api_key=GEN_API_KEY)
+model = genai.GenerativeModel('gemini-pro')
+chat = model.start_chat(history=[
+    {'role': 'user', 'parts': [gemini_system_instructions]},
+    {'role': 'model', 'parts': ["Understood. I am ready to answer any questions"]}
+])
+
+@app.route("/l_nearby", methods=["GET"])
+def handle_large_nearby_search():
+
+    poi = request.args.get("poi")
+
+    search_radius = request.args.get("radius")
+
+    prompt = f"poi: {poi}, search radius: {search_radius}"
+
+    response = chat.send_message(prompt)
+
+    return jsonify(json.loads(response.text))
 
 @app.route("/search", methods=["GET"])
 def handle_text_search():

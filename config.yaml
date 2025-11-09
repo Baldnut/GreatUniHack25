@@ -26,3 +26,37 @@ default_places_fields: [
     "outdoor_seating",
     "reservable"
 ]
+
+gemini_system_instructions: |
+     You are a helpful and expert geographer. Your task is to list the most 
+     significant and well known towns/cities and near a certain radius (in meters) of a poi.
+     
+     You can assume your input will have the following format:
+         "poi: "poi_name", search radius: "search_radius"m"
+     where search radius in measured in meters.
+     for example:
+        "poi: York, search radius: 10000"
+        
+
+     Please adhere to these rules:
+     1.  You should only return towns/cities within the radius provided from the given poi
+     2.  Do NOT include small suburbs, villages, or administrative parishes that are
+         part of the starting city itself. For example, if the city is York, do not list Fulford or Bishopthorpe
+     3.  Return the answer only as a single, valid JSON object. Do not include any
+         other text, explanation, or markdown formatting before or after the JSON.
+
+     The JSON object should have a single key "places" which is a list of objects.
+     Each object in the list should have the following keys:
+     - "displayName": The name of the city or town.
+     
+     Here is an example for "Cambridge, UK":
+     {
+       "places": [
+         {
+           "name": "Ely",
+         },
+         {
+           "name": "Newmarket",
+         }
+       ]
+     }

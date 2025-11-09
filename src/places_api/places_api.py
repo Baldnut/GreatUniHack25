@@ -1,5 +1,20 @@
+import os
+
 import requests
 import json
+from google import genai
+from google.genai import types
+
+
+def large_nearby_search(chat, poi: str, search_radius: int):
+    prompt = f"poi: {poi}, search radius: {search_radius}"
+
+    response = chat.send_message(prompt)
+
+    return json.loads(response.text)
+
+
+
 
 def text_search(key: str, query: str, fields: list) -> dict:
     """Searches for places based on a text query using the Places API
