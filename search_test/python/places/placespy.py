@@ -6,15 +6,16 @@ cgitb.enable()
 import sys
 sys.path.append('/mnt/web305/c1/31/53991431/htdocs/.local/lib/python3.11/site-packages')
 
-
 # SEARCH APP
 from flask import Flask, request, jsonify
 import requests
 import json
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
-API_KEY = "AIzaSyBaZeS-EruwVhK5IF8Nr-QTgAiUziFXFMQ"
+API_KEY = "AIzaSyDDdy36pvp3zh6kbXNVdr_Z8TmCKu06xSc"
 
 
 default_search_fields = ",".join([
@@ -35,7 +36,6 @@ default_places_fields = ",".join([
   "location",
   "rating",
   "userRatingCount",
-  "photos",
   "types",
   "googleMapsUri",
   "currentOpeningHours.openNow",
@@ -43,7 +43,7 @@ default_places_fields = ",".join([
   "internationalPhoneNumber"
 ])
 
-
+# "photos" get very expensive
 
 
 def text_search(key: str, query: str, fields: list) -> dict:
@@ -215,6 +215,22 @@ def handle_place_details(place_id):
 
     result = place_details(API_KEY, place_id, fields=fields)
     return jsonify(result)
+
+
+@app.route('/image')
+def image():
+    query = request.args.get('q')
+    params = {
+        "q": f"Image {query}",
+        "country": "ALL",
+        "count": 5
+    }
+    headers = {
+        "Accept": "application/json",
+        "x-subscription-token": "BSAZQUe6SEkMN2ySPMqLrjMxTOvcTMS"
+    }
+    r = requests.get("https://api.search.brave.com/res/v1/images/search", headers=headers, params=params)
+    return jsonify(r.json())
 
 
 @app.route('/', methods=['GET'])

@@ -1,4 +1,4 @@
-const GEMINI_API_KEY = 'AIzaSyBST-U6u64VTqVrcP0rYgw7TUXWEl1zjtk';
+const GEMINI_API_KEY = 'AIzaSyA6MYmG27VkeIEpIBuaJ-TIIJrQV_E9Cp0';
 const CITY_IMAGE_BASE_HEIGHT = 112; // px (~7rem)
 const MOBILE_BREAKPOINT = 768;
 let currentCityData = null;

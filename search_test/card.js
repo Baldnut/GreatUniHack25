@@ -1,10 +1,10 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const placeId = 'ChIJRUvNrbYpQg0Rhs1QRF-mfDA'; // Hardcoded for now as per user request
     const drawer = document.getElementById('places-drawer');
 
     // Function to fetch and display place details
     async function loadAndShowPlaceDetails(placeId) {
+        showSkeleton();
         try {
             const response = await fetch(`https://timefactories.com/cgi-bin/guh/places.cgi/details/${placeId}`);
             if (!response.ok) {
@@ -14,6 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
             populateCard(data);
         } catch (error) {
             console.error('Error fetching place details:', error);
+            // Optionally, you could show an error message in the drawer
+        } finally {
+            hideSkeleton();
         }
     }
 
@@ -111,11 +114,32 @@ document.addEventListener('DOMContentLoaded', () => {
             img.className = 'w-full h-full object-cover';
             carouselContainer.appendChild(img);
         } else {
-            const img = document.createElement('img');
-            img.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
-            img.alt = 'Default place image';
-            img.className = 'w-full h-full object-cover';
-            carouselContainer.appendChild(img);
+            get_image_url(data.displayName?.text, data.formattedAddress).then(imageData => {
+                const img = document.createElement('img');
+                if (imageData.results && imageData.results.length > 0) {
+                    const targetRatio = 16 / 9;
+                    let bestImage = imageData.results[0];
+                    let minDiff = Infinity;
+
+                    imageData.results.forEach(result => {
+                        if (result.thumbnail && result.thumbnail.width && result.thumbnail.height) {
+                            const ratio = result.thumbnail.width / result.thumbnail.height;
+                            const diff = Math.abs(ratio - targetRatio);
+                            if (diff < minDiff) {
+                                minDiff = diff;
+                                bestImage = result;
+                            }
+                        }
+                    });
+                    img.src = bestImage.thumbnail.src;
+                    img.alt = bestImage.title;
+                } else {
+                    img.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                    img.alt = 'Default place image';
+                }
+                img.className = 'w-full h-full object-cover';
+                carouselContainer.appendChild(img);
+            });
         }
 
         // Business Hours
@@ -140,4 +164,29 @@ document.addEventListener('DOMContentLoaded', () => {
         // Hide reviews section as there's no data for it
         document.getElementById('reviews-section').style.display = 'none';
     }
+
+    function showSkeleton() {
+        document.getElementById('places-drawer-skeleton').style.display = 'block';
+        document.getElementById('drawer-content').style.display = 'none';
+    }
+
+    function hideSkeleton() {
+        document.getElementById('places-drawer-skeleton').style.display = 'none';
+        document.getElementById('drawer-content').style.display = 'block';
+    }
 });
+
+async function get_image_url(name, address) {
+    const query = `Image ${name} ${address}`;
+    const params = new URLSearchParams({
+        q: query
+    });
+    const response = await fetch(`https://timefactories.com/cgi-bin/guh/places.cgi/image?${params}`, {
+        method: 'get',
+        headers: {
+            'Accept': 'application/json'
+        },
+    });
+    const body = await response.json();
+    return body;
+}
