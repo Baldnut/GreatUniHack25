@@ -5,13 +5,14 @@ from datetime import datetime, timezone, timedelta
 
 current_UTC = datetime.now(timezone.utc)
 
-api_key = 'AIzaSyBST-U6u64VTqVrcP0rYgw7TUXWEl1zjtk'
-API_key_google = "AIzaSyCQ7V17qSJfdc30-6rgodCIVXW_CXb_R04"
+api_key = 'GEMINIKEY'
+API_key_google = "GOOGLEMAPSKEY"
 gmap_client = googlemaps.Client(key = API_key_google)
 client = genai.Client(api_key = api_key)
 
-def station_coords(city, country):
-    prompt = "what are the coordinates of the main rail station in City: '" + city + "', Country: '" + country + "', give me only the coordinate, formatted as 'latitude, longitude', and no other information. If the city or the country is not provided, or if the input is invalid, return an empty string"
+def station_coords(city_coordinates):
+    #Generates the coordinates of a city's main train station, given the city's general coordinates. Returns None if not possible
+    prompt = f"what are the coordinates of the main rail station in the city with coordinates '{city_coordinates}' give me only the coordinate, formatted as 'latitude, longitude', and no other information. If the coordinate is not provided in the correct 'latitude, longitude' format, or if the input location isn't a city, return an empty string"
     response = client.models.generate_content(
         model='gemini-2.5-flash',
         contents=prompt
@@ -36,6 +37,7 @@ headers = {'Content-Type':'application/json',
            'X-Goog-FieldMask':",".join(['duration', 'distanceMeters', 'condition'])}
 
 def travel_time_distance(origin, dest):
+    #Calculates the transit times and distance from one set of coodrinates to another via public transit. Returns None if not possible
     if origin == None or dest == None:
         return None
     
@@ -86,4 +88,5 @@ def travel_time_distance(origin, dest):
     return(int(response.json()[0].get('duration')[:-1]), response.json()[0].get('distanceMeters'))
 
 def time_distance_between_cities(origin, dest):
+    #Calculates the travel time and distance between the rail stations of two cities given their general coordinates. Returns None if not possible
     return travel_time_distance(station_coords(origin), station_coords(dest))

@@ -6,10 +6,8 @@ app = Flask(__name__)
 def handle_time_distance_between_cities():
 
     origin = request.args.get("o")
-    origin = origin.split(',')
 
     dest = request.args.get("d")
-    dest = dest.split(',')
 
     result = travel_time_distance(origin, dest)
 
