@@ -317,9 +317,11 @@ function setupContinueButton() {
         }
         const { name, coordinates } = currentCityData;
         if (coordinates?.lat != null && coordinates?.lon != null) {
-            console.log(`Selected city: ${name} (lat: ${coordinates.lat}, lon: ${coordinates.lon})`);
+            // Navigate to graph.html with city parameters
+            window.location.href = `graph.html?name=${encodeURIComponent(name)}&lat=${coordinates.lat}&lon=${coordinates.lon}`;
         } else {
             console.log(`Selected city: ${name} (coordinates unavailable)`);
+            alert('Sorry, coordinates are not available for this city.');
         }
     };
 }

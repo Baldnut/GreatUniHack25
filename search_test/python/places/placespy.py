@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 # Initialisation on web server
+
 import cgitb
 cgitb.enable()
 import sys
@@ -10,12 +11,58 @@ sys.path.append('/mnt/web305/c1/31/53991431/htdocs/.local/lib/python3.11/site-pa
 from flask import Flask, request, jsonify
 import requests
 import json
+import re
 from flask_cors import CORS
+from google import genai
+from google.genai import types
 
 app = Flask(__name__)
 CORS(app)
 
 API_KEY = "AIzaSyDDdy36pvp3zh6kbXNVdr_Z8TmCKu06xSc"
+GEN_API_KEY = "AIzaSyA6MYmG27VkeIEpIBuaJ-TIIJrQV_E9Cp0"
+
+
+gemini_system_instructions = """
+     You are a helpful and expert geographer. Your task is to list the most 
+     significant and well known towns/cities and near a certain radius (in meters) of a poi.
+     
+     You can assume your input will have the following format:
+         "poi: "poi_name", search radius: "search_radius"m"
+     where search radius in measured in meters.
+     for example:
+        "poi: York, search radius: 10000"
+        
+
+     Please adhere to these rules:
+     1.  You should only return towns/cities within the radius provided from the given poi
+     2.  Do NOT include small suburbs, villages, or administrative parishes that are
+         part of the starting city itself. For example, if the city is York, do not list Fulford or Bishopthorpe
+     3.  Return the answer only as a single, valid JSON object. Do not include any
+         other text, explanation, or markdown formatting before or after the JSON.
+
+     The JSON object should have a single key "places" which is a list of objects.
+     Each object in the list should have the following keys:
+     - "displayName": The name of the city or town.
+     - "lat": The latitude of the city or town.
+     - "lon": The longitude of the city or town.
+     
+     Here is an example for "Cambridge, UK":
+     {
+       "places": [
+         {
+           "displayName": "Ely",
+           "lat": 52.3989,
+           "lon": 0.2625
+         },
+         {
+           "displayName": "Newmarket",
+           "lat": 52.2440,
+           "lon": 0.4043
+         }
+       ]
+     }
+"""
 
 
 default_search_fields = ",".join([
@@ -25,9 +72,8 @@ default_search_fields = ",".join([
 ])
 default_nearby_fields = ",".join([
   "displayName",
-  "formattedAddress",
-  "internationalPhoneNumber",
-  "rating"
+  "id",
+  "location"
 ])
 default_places_fields = ",".join([
   "id",
@@ -43,7 +89,45 @@ default_places_fields = ",".join([
   "internationalPhoneNumber"
 ])
 
-# "photos" get very expensive
+
+
+@app.route("/l_nearby", methods=["GET"])
+def handle_large_nearby_search():
+    poi = request.args.get("poi")
+    search_radius = request.args.get("radius")
+    user_prompt = f"poi: {poi}, search radius: {search_radius}m"
+
+    client = genai.Client(api_key=GEN_API_KEY)
+    
+    # Combine system instructions with user prompt
+    full_prompt = f"{gemini_system_instructions}\n\n{user_prompt}"
+    
+    response = client.models.generate_content(
+        model='gemini-2.5-flash-lite',
+        contents=[
+            {
+                "role": "user",
+                "parts": [{"text": full_prompt}]
+            }
+        ]
+    )
+
+    # Clean the response - remove markdown code blocks
+    response_text = response.text.strip()
+    
+    # Remove ```json and ``` markers
+    response_text = re.sub(r'^```json\s*', '', response_text)
+    response_text = re.sub(r'^```\s*', '', response_text)
+    response_text = re.sub(r'\s*```$', '', response_text)
+    response_text = response_text.strip()
+    
+    # Parse and return as JSON
+    try:
+        json_data = json.loads(response_text)
+        return jsonify(json_data)
+    except json.JSONDecodeError:
+        return jsonify({"error": "Failed to parse JSON", "raw": response_text}), 500
+
 
 
 def text_search(key: str, query: str, fields: list) -> dict:
