@@ -1,5 +1,4 @@
-const GEMINI_API_KEY = 'AIzaSyA6MYmG27VkeIEpIBuaJ-TIIJrQV_E9Cp0';
-const ELEVENLABS_API_KEY = "sk_2fa75eedf7674225add2b05aae2d7996de9c461b0a1cc51e"; // replace with your API key
+const GEMINI_API_KEY = 'AIzaSyBST-U6u64VTqVrcP0rYgw7TUXWEl1zjtk';
 const CITY_IMAGE_BASE_HEIGHT = 112; // px (~7rem)
 const MOBILE_BREAKPOINT = 768;
 let currentCityData = null;
